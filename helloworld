@@ -1,0 +1,22 @@
+        /// <summary>
+        /// The simplest possible HTTP Handler that just returns "Hello World."
+        /// </summary>
+        public class HelloWorldHandler : HttpMessageHandler
+        {
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+                CancellationToken cancellationToken)
+            {
+                return Task.FromResult(new HttpResponseMessage()
+                {
+                    Content = new ByteArrayContent(Encoding.UTF8.GetBytes("Greetings, Earthlings. Take me to your leader!"))
+                });
+            }
+        };
+
+        public static void Register(HttpConfiguration config)
+        {
+            var emptyDictionary = new HttpRouteValueDictionary();
+            // Add our one HttpMessageHandler to the root path.
+            config.Routes.MapHttpRoute("index", "", emptyDictionary, emptyDictionary,
+                new HelloWorldHandler());
+        }
